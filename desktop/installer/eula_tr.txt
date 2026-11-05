@@ -1,0 +1,35 @@
+﻿SON KULLANICI LİSANS SÖZLEŞMESİ
+
+Bu Son Kullanıcı Lisans Sözleşmesi ("Sözleşme"), siz ("Kullanıcı") ile Development Turkey ("Şirket") arasında, DT Kalkan yazılımının ("Yazılım") kullanımına ilişkin hukuki bir sözleşmedir. Yazılımı kurarak, kopyalayarak veya kullanarak bu Sözleşme'nin tüm hükümlerini kabul etmiş sayılırsınız.
+
+1. LİSANS
+Şirket, işbu Sözleşme'ye uymanız koşuluyla, Yazılım'ı kişisel ve ticari olmayan amaçlarla kendi cihazlarınızda kullanmanız için size münhasır olmayan, devredilemez, alt lisans verilemez ve geri alınabilir bir lisans verir.
+
+2. MÜLKİYET
+Yazılım; kaynak kodu, tespit motoru, imza veritabanları, kurallar, karakter tasarımları, sesler, grafikler ve tüm belgeleri dahil olmak üzere Şirket'in ve lisans verenlerinin mülkiyetindedir ve telif hakkı ile fikri mülkiyet yasalarıyla korunmaktadır. Bu Sözleşme size hiçbir mülkiyet hakkı devretmez.
+
+3. KISITLAMALAR
+Yazılım'ı (a) tersine mühendislik, kaynak koda dönüştürme veya parçalarına ayırma işlemlerine tabi tutamaz, (b) kiralayamaz, satamaz, dağıtamaz veya alt lisanslayamaz, (c) üzerinde değişiklik yapamaz ya da türev çalışmalar oluşturamaz, (d) telif hakkı ve marka bildirimlerini kaldıramazsınız.
+
+4. KORUMA VE VERİ
+Yazılım, dosyalarınızı yerel olarak analiz eder. Dosyalarınızın içeriği hiçbir sunucuya gönderilmez. İmza güncellemeleri için genel tehdit istihbaratı kaynaklarına bağlanılır; hava durumu özelliği yalnızca izin vermeniz halinde yaklaşık (IP tabanlı) konum kullanır ve bu bilgi saklanmaz.
+
+5. KARANTİNA
+Zararlı veya şüpheli olarak sınıflandırılan dosyalar şifrelenmiş karantinaya taşınabilir. Yanlış pozitif sonuçlar mümkündür; karantinadaki dosyaları geri yükleme sorumluluğu Kullanıcı'ya aittir.
+
+6. GARANTİ REDDİ
+Yazılım "OLDUĞU GİBİ" sunulmaktadır. Şirket, Yazılım'ın tüm tehditleri tespit edeceğini, kesintisiz veya hatasız çalışacağını garanti etmez. Yürürlükteki yasaların izin verdiği azami ölçüde, açık veya zımni tüm garantiler reddedilir.
+
+7. SORUMLULUĞUN SINIRLANDIRILMASI
+Şirket hiçbir durumda veri kaybı, iş kesintisi veya dolaylı zararlardan sorumlu tutulamaz. Şirket'in toplam sorumluluğu, Yazılım için ödediğiniz bedel ile sınırlıdır.
+
+8. GÜNCELLEMELER
+Şirket, Yazılım'ı ve imza veritabanlarını güncelleyebilir. Güncellemeler bu Sözleşme'ye tabidir.
+
+9. FESİH
+Bu Sözleşme'nin herhangi bir hükmünü ihlal etmeniz halinde lisansınız kendiliğinden sona erer. Fesih halinde Yazılım'ı kullanmayı bırakmalı ve tüm kopyalarını silmelisiniz.
+
+10. UYGULANACAK HUKUK
+Bu Sözleşme Türkiye Cumhuriyeti kanunlarına tabidir. Uyuşmazlıklarda İstanbul Mahkemeleri ve İcra Daireleri yetkilidir.
+
+© 2026 Development Turkey. Tüm hakları saklıdır.

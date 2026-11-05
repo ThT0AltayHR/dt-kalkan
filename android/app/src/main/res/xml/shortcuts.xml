@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="quick" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_quick" android:shortcutLongLabel="@string/sc_quick">
+        <intent android:action="com.developmentturkey.dtkalkan.action.QUICK_SCAN" android:targetPackage="com.developmentturkey.dtkalkan" android:targetClass="com.developmentturkey.dtkalkan.ui.MainActivity"/>
+    </shortcut>
+    <shortcut android:shortcutId="notch" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_notch" android:shortcutLongLabel="@string/sc_notch">
+        <intent android:action="com.developmentturkey.dtkalkan.action.OPEN_NOTCH" android:targetPackage="com.developmentturkey.dtkalkan" android:targetClass="com.developmentturkey.dtkalkan.ui.NotchTrampolineActivity"/>
+    </shortcut>
+    <shortcut android:shortcutId="apps" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_apps" android:shortcutLongLabel="@string/sc_apps">
+        <intent android:action="com.developmentturkey.dtkalkan.action.SCAN_APPS" android:targetPackage="com.developmentturkey.dtkalkan" android:targetClass="com.developmentturkey.dtkalkan.ui.MainActivity"/>
+    </shortcut>
+</shortcuts>

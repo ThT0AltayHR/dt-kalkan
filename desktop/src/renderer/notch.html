@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; media-src 'self' data:; connect-src 'self'">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/notch.css">
+</head>
+<body>
+<div id="stage">
+  <div id="pill">
+    <div class="layer on" id="idle">
+      <div class="clock" id="clock">--:--</div>
+      <div class="mid"><canvas id="miniM"></canvas></div>
+      <div class="wx" id="wx"></div>
+      <div class="prog" id="prog"><svg class="mini-ring" viewBox="0 0 20 20"><circle class="bg" cx="10" cy="10" r="7.5"/><circle class="fg" id="progFg" cx="10" cy="10" r="7.5" stroke-dasharray="47.1" stroke-dashoffset="47.1"/></svg><span id="progT">0%</span></div>
+    </div>
+    <div class="layer" id="hover">
+      <div class="top"><canvas id="hoverM"></canvas><div class="st"><div class="st-t"><span class="d" id="hDot"></span><span id="hTitle"></span></div><div class="st-s" id="hSub"></div></div><div class="big-clock"><div class="c" id="bigClock"></div><div class="dt" id="bigDate"></div></div></div>
+      <div class="bottom"><div class="wcard" id="wcard"></div><button class="nbtn primary" id="hQuick"></button><button class="nbtn" id="hOpen"></button></div>
+    </div>
+    <div class="layer" id="drop"><canvas id="dropM"></canvas><div class="dt" id="dropT"></div><div class="ds" id="dropS"></div></div>
+    <div class="layer" id="scanL"><canvas id="scanM"></canvas><div class="info"><div class="tt" id="sT"></div><div class="fn" id="sF"></div><div class="thr" id="sThr"></div><div class="bar" id="sBar"><i></i></div><div class="acts" id="sActs"></div></div></div>
+    <div class="layer" id="alert"><canvas id="alertM"></canvas><div style="min-width:0;flex:1"><div class="at" id="aT"></div><div class="as" id="aS"></div><div class="ath" id="aTh"></div></div></div>
+  </div>
+</div>
+<div id="paper"><div class="pg"><div class="ln" style="top:20px"></div><div class="ln" style="top:28px;right:16px"></div><div class="ln" style="top:36px"></div></div><div class="fold"></div><div class="ext" id="paperExt">EXE</div></div>
+<script src="js/i18n.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/mochi.js"></script>
+<script src="js/common.js"></script>
+<script src="js/notch.js"></script>
+</body>
+</html>

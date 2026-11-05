@@ -1,0 +1,74 @@
+(function (g) {
+  const tr = `SON KULLANICI LİSANS SÖZLEŞMESİ
+
+Bu Son Kullanıcı Lisans Sözleşmesi ("Sözleşme"), siz ("Kullanıcı") ile Development Turkey ("Şirket") arasında, {app} yazılımının ("Yazılım") kullanımına ilişkin hukuki bir sözleşmedir. Yazılımı kurarak, kopyalayarak veya kullanarak bu Sözleşme'nin tüm hükümlerini kabul etmiş sayılırsınız.
+
+1. LİSANS
+Şirket, işbu Sözleşme'ye uymanız koşuluyla, Yazılım'ı kişisel ve ticari olmayan amaçlarla kendi cihazlarınızda kullanmanız için size münhasır olmayan, devredilemez, alt lisans verilemez ve geri alınabilir bir lisans verir.
+
+2. MÜLKİYET
+Yazılım; kaynak kodu, tespit motoru, imza veritabanları, kurallar, karakter tasarımları, sesler, grafikler ve tüm belgeleri dahil olmak üzere Şirket'in ve lisans verenlerinin mülkiyetindedir ve telif hakkı ile fikri mülkiyet yasalarıyla korunmaktadır. Bu Sözleşme size hiçbir mülkiyet hakkı devretmez.
+
+3. KISITLAMALAR
+Yazılım'ı (a) tersine mühendislik, kaynak koda dönüştürme veya parçalarına ayırma işlemlerine tabi tutamaz, (b) kiralayamaz, satamaz, dağıtamaz veya alt lisanslayamaz, (c) üzerinde değişiklik yapamaz ya da türev çalışmalar oluşturamaz, (d) telif hakkı ve marka bildirimlerini kaldıramazsınız.
+
+4. KORUMA VE VERİ
+Yazılım, dosyalarınızı yerel olarak analiz eder. Dosyalarınızın içeriği hiçbir sunucuya gönderilmez. İmza güncellemeleri için genel tehdit istihbaratı kaynaklarına bağlanılır; hava durumu özelliği yalnızca izin vermeniz halinde yaklaşık (IP tabanlı) konum kullanır ve bu bilgi saklanmaz.
+
+5. KARANTİNA
+Zararlı veya şüpheli olarak sınıflandırılan dosyalar şifrelenmiş karantinaya taşınabilir. Yanlış pozitif sonuçlar mümkündür; karantinadaki dosyaları geri yükleme sorumluluğu Kullanıcı'ya aittir.
+
+6. GARANTİ REDDİ
+Yazılım "OLDUĞU GİBİ" sunulmaktadır. Şirket, Yazılım'ın tüm tehditleri tespit edeceğini, kesintisiz veya hatasız çalışacağını garanti etmez. Yürürlükteki yasaların izin verdiği azami ölçüde, açık veya zımni tüm garantiler reddedilir.
+
+7. SORUMLULUĞUN SINIRLANDIRILMASI
+Şirket hiçbir durumda veri kaybı, iş kesintisi veya dolaylı zararlardan sorumlu tutulamaz. Şirket'in toplam sorumluluğu, Yazılım için ödediğiniz bedel ile sınırlıdır.
+
+8. GÜNCELLEMELER
+Şirket, Yazılım'ı ve imza veritabanlarını güncelleyebilir. Güncellemeler bu Sözleşme'ye tabidir.
+
+9. FESİH
+Bu Sözleşme'nin herhangi bir hükmünü ihlal etmeniz halinde lisansınız kendiliğinden sona erer. Fesih halinde Yazılım'ı kullanmayı bırakmalı ve tüm kopyalarını silmelisiniz.
+
+10. UYGULANACAK HUKUK
+Bu Sözleşme Türkiye Cumhuriyeti kanunlarına tabidir. Uyuşmazlıklarda İstanbul Mahkemeleri ve İcra Daireleri yetkilidir.
+
+© 2026 Development Turkey. Tüm hakları saklıdır.`;
+  const en = `END USER LICENSE AGREEMENT
+
+This End User License Agreement ("Agreement") is a legal agreement between you ("User") and Development Turkey ("Company") for the use of the {app} software ("Software"). By installing, copying or using the Software you agree to be bound by all terms of this Agreement.
+
+1. LICENSE
+Subject to your compliance with this Agreement, the Company grants you a non-exclusive, non-transferable, non-sublicensable, revocable license to use the Software on your own devices for personal, non-commercial purposes.
+
+2. OWNERSHIP
+The Software, including its source code, detection engine, signature databases, rules, character designs, sounds, graphics and documentation, is owned by the Company and its licensors and is protected by copyright and intellectual property laws. No ownership rights are transferred to you.
+
+3. RESTRICTIONS
+You may not (a) reverse engineer, decompile or disassemble the Software, (b) rent, sell, distribute or sublicense it, (c) modify it or create derivative works, (d) remove any copyright or trademark notices.
+
+4. PROTECTION AND DATA
+The Software analyses your files locally. File contents are never uploaded. Public threat intelligence sources are contacted for signature updates; the weather feature uses approximate (IP-based) location only with your permission and does not store it.
+
+5. QUARANTINE
+Files classified as malicious or suspicious may be moved to an encrypted quarantine. False positives are possible; restoring quarantined files is the User's responsibility.
+
+6. DISCLAIMER OF WARRANTY
+The Software is provided "AS IS". The Company does not warrant that it will detect every threat or operate uninterrupted or error-free. To the maximum extent permitted by law, all express or implied warranties are disclaimed.
+
+7. LIMITATION OF LIABILITY
+In no event shall the Company be liable for data loss, business interruption or indirect damages. The Company's total liability is limited to the amount you paid for the Software.
+
+8. UPDATES
+The Company may update the Software and its signature databases. Updates are governed by this Agreement.
+
+9. TERMINATION
+Your license terminates automatically if you breach any term of this Agreement. Upon termination you must stop using the Software and delete all copies.
+
+10. GOVERNING LAW
+This Agreement is governed by the laws of the Republic of Türkiye. The courts of Istanbul shall have jurisdiction.
+
+© 2026 Development Turkey. All rights reserved.`;
+  const api = { tr, en };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else g.EULA = api;
+})(typeof window !== 'undefined' ? window : globalThis);

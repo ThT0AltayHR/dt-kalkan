@@ -1,0 +1,140 @@
+DEVELOPMENT TURKEY — TESCİLLİ YAZILIM LİSANSI (KAYNAĞI GÖRÜNÜR / SOURCE-AVAILABLE)
+DEVELOPMENT TURKEY — PROPRIETARY SOFTWARE LICENSE (SOURCE-AVAILABLE)
+
+Ürün / Product : DT Kalkan (Windows & Android)
+Telif / Copyright © 2026 Muhammed Balın — Development Turkey
+Tüm hakları saklıdır. / All rights reserved.
+
+=====================================================================
+TÜRKÇE
+=====================================================================
+
+1. KAPSAM
+   Bu depodaki kaynak kodu, derleme betikleri, veri dosyaları, imza
+   veritabanları, görseller, animasyonlar, sesler, simgeler, belgeler ve
+   bunların tüm parçaları (birlikte "Yazılım") Muhammed Balın /
+   Development Turkey'in ("Hak Sahibi") mülkiyetindedir ve 5846 sayılı
+   Fikir ve Sanat Eserleri Kanunu ile uluslararası telif hukuku
+   kapsamında korunmaktadır.
+
+2. İZİN VERİLEN TEK KULLANIM: GÖRÜNTÜLEME
+   Bu depo herkese açık olarak yalnızca incelenebilmesi amacıyla
+   yayımlanmıştır. Yazılımın kaynak kodunu GitHub arayüzünde veya kendi
+   cihazınızda yalnızca okumak ve incelemek amacıyla görüntüleyebilirsiniz.
+   GitHub Hizmet Şartları'nın gerektirdiği ölçüde "fork" oluşturulması bu
+   lisansta tanınan haklar dışında hiçbir hak doğurmaz.
+
+3. YASAKLAR
+   Hak Sahibi'nin önceden verilmiş YAZILI izni olmaksızın aşağıdakiler
+   kesinlikle yasaktır:
+   a) Yazılımın tamamının veya herhangi bir parçasının kopyalanması,
+      çoğaltılması veya başka bir projeye aktarılması;
+   b) Değiştirilmesi, uyarlanması, çevrilmesi veya türev eserlerin
+      oluşturulması;
+   c) Dağıtılması, yeniden yayımlanması, alt lisanslanması, satılması,
+      kiralanması veya herhangi bir yolla üçüncü kişilere sunulması;
+   d) Ticari amaçla veya gelir elde etmek amacıyla kullanılması;
+   e) Derlenerek yeniden paketlenmesi, farklı bir ad veya marka ile
+      yayımlanması;
+   f) Görsellerin, Mochi karakterlerinin, seslerin, simgelerin ve marka
+      unsurlarının ayrıca kullanılması;
+   g) Yazılımın, yapay zekâ / makine öğrenmesi modellerinin eğitimi için
+      veri olarak kullanılması.
+
+4. RESMİ SÜRÜMLER
+   Hak Sahibi'nin resmi kanallardan (bu deponun "Releases" bölümü dahil)
+   yayımladığı derlenmiş sürümler, kişisel ve ticari olmayan kullanım
+   için ücretsiz indirilip kurulabilir. Bu, kaynak koda ilişkin
+   yukarıdaki yasakları değiştirmez.
+
+5. ÜÇÜNCÜ TARAF UNSURLAR
+   Yazılımda kullanılan açık kaynaklı üçüncü taraf kütüphaneler kendi
+   lisanslarına tabidir. Mochi karakterleri ve sesleri, orijinal yazarı
+   Louis'in izniyle kullanılmıştır; bu izin üçüncü kişilere devredilemez.
+
+6. GARANTİ REDDİ VE SORUMLULUK
+   Yazılım "OLDUĞU GİBİ" sunulur; açık veya örtülü hiçbir garanti
+   verilmez. Hak Sahibi, Yazılımın kullanımından doğabilecek doğrudan
+   veya dolaylı hiçbir zarardan sorumlu tutulamaz.
+
+7. İHLAL VE FESİH
+   Bu lisansın herhangi bir hükmünün ihlali, görüntüleme izni dahil tüm
+   izinleri kendiliğinden sona erdirir. Hak Sahibi, ihlal halinde
+   kanuni haklarını saklı tutar.
+
+8. İZİN TALEBİ
+   Yukarıdaki yasaklı kullanımlardan herhangi biri için yazılı izin
+   talebinizi Hak Sahibi'ne iletin: balinmuhammed502@gmail.com
+
+9. UYGULANACAK HUKUK
+   Bu lisans Türkiye Cumhuriyeti hukukuna tabidir. Uyuşmazlıklarda
+   Türkiye Cumhuriyeti mahkemeleri ve icra daireleri yetkilidir.
+
+=====================================================================
+ENGLISH
+=====================================================================
+
+1. SCOPE
+   The source code, build scripts, data files, signature databases,
+   images, animations, sounds, icons, documentation and every part
+   thereof in this repository (together, the "Software") are the
+   property of Muhammed Balın / Development Turkey (the "Owner") and are
+   protected by Turkish Law No. 5846 on Intellectual and Artistic Works
+   and by international copyright law.
+
+2. THE ONLY PERMITTED USE: VIEWING
+   This repository is published publicly for review purposes only. You
+   may view the source code on GitHub or on your own device solely to
+   read and study it. Any fork created to the extent required by the
+   GitHub Terms of Service grants no rights beyond this license.
+
+3. RESTRICTIONS
+   Without the Owner's prior WRITTEN permission, the following are
+   strictly prohibited:
+   a) copying, reproducing or transferring all or any part of the
+      Software into another project;
+   b) modifying, adapting, translating or creating derivative works;
+   c) distributing, republishing, sublicensing, selling, renting or
+      otherwise making the Software available to third parties;
+   d) any commercial or revenue-generating use;
+   e) building and repackaging the Software or publishing it under a
+      different name or brand;
+   f) separate use of the images, Mochi characters, sounds, icons and
+      brand assets;
+   g) using the Software as training data for AI / machine-learning
+      models.
+
+4. OFFICIAL RELEASES
+   Compiled builds published by the Owner through official channels
+   (including this repository's "Releases" section) may be downloaded
+   and installed free of charge for personal, non-commercial use. This
+   does not change the restrictions above regarding the source code.
+
+5. THIRD-PARTY COMPONENTS
+   Open-source third-party libraries used by the Software remain under
+   their own licenses. The Mochi characters and sounds are used with the
+   permission of their original author, Louis; that permission is not
+   transferable to third parties.
+
+6. DISCLAIMER OF WARRANTY AND LIABILITY
+   The Software is provided "AS IS", without warranty of any kind,
+   express or implied. The Owner shall not be liable for any direct or
+   indirect damages arising from the use of the Software.
+
+7. BREACH AND TERMINATION
+   Any breach of this license automatically terminates all permissions,
+   including the permission to view. The Owner reserves all legal
+   remedies in case of breach.
+
+8. PERMISSION REQUESTS
+   Send written permission requests for any restricted use to the
+   Owner: balinmuhammed502@gmail.com
+
+9. GOVERNING LAW
+   This license is governed by the laws of the Republic of Türkiye. The
+   courts and enforcement offices of the Republic of Türkiye have
+   jurisdiction over any dispute.
+
+Bu lisansın Türkçe ve İngilizce metinleri arasında farklılık olması
+halinde Türkçe metin esas alınır. / In case of any discrepancy between
+the Turkish and English texts, the Turkish text prevails.

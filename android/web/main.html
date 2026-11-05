@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; media-src 'self' data:; connect-src 'self'; frame-src 'self'">
+<title>DT Kalkan</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+<div id="bg"><div class="orb o1"></div><div class="orb o2"></div><div class="grain"></div></div>
+
+<div id="shell">
+  <main id="content">
+    <section class="view" id="v-dashboard"></section>
+    <section class="view" id="v-scan"></section>
+    <section class="view" id="v-apps"></section>
+    <section class="view" id="v-results"></section>
+    <section class="view" id="v-quarantine"></section>
+    <section class="view" id="v-history"></section>
+    <section class="view" id="v-settings"></section>
+  </main>
+  <nav class="nav" id="nav"></nav>
+</div>
+
+<!-- in-app dynamic notch (same notch.html as the overlay / desktop) -->
+<div id="notchHit"></div>
+<iframe id="notchFrame" src="notch.html?host=inapp" title=""></iframe>
+<div id="dragGhost"></div>
+
+<div id="stack"></div>
+<div id="sheet"><div class="sh-box" id="sheetBox"></div></div>
+<div id="onboard"></div>
+<div id="intro"></div>
+<div id="modal"><div class="m-box" id="modalBox"></div></div>
+<div id="snack"></div>
+
+<script src="js/bridge.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/i18n-android.js"></script>
+<script src="js/eula.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/mochi.js"></script>
+<script src="js/common.js"></script>
+<script src="js/app.js"></script>
+<script src="js/apps.js"></script>
+<script src="js/inapp-notch.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/onboarding.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

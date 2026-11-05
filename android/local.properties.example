@@ -1,0 +1,2 @@
+# local.properties olarak kopyalayın (Android Studio bunu genelde kendisi oluşturur). Commit etmeyin.
+sdk.dir=/path/to/Android/Sdk

@@ -1,0 +1,64 @@
+# ───────── İşletim sistemi / editör ─────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+*.iml
+
+# ───────── Node / Electron (desktop) ─────────
+node_modules/
+desktop/out/
+desktop/dist/
+desktop/release/
+.cache/
+*.log
+npm-debug.log*
+yarn-error.log*
+.npm/
+.eslintcache
+
+# ───────── Derlenmiş ikili dosyalar (GitHub Releases'e yüklenir) ─────────
+*.exe
+*.msi
+*.blockmap
+*.apk
+*.aab
+*.idsig
+*.zip
+*.7z
+!desktop/installer/*.bmp
+
+# ───────── Android / Gradle ─────────
+.gradle/
+.kotlin/
+build/
+!desktop/build/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+android/tools/testapk/out/
+
+# ───────── İMZA ANAHTARLARI VE GİZLİ BİLGİLER (ASLA COMMIT ETMEYİN) ─────────
+keystore/
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+keystore.properties
+signing.properties
+google-services.json
+GoogleService-Info.plist
+.env
+.env.*
+!*.example
+secrets.*
+
+# ───────── Python ─────────
+__pycache__/
+*.pyc

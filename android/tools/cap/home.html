@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<!-- Screenshot harness only: an Android home screen with the DT Kalkan overlay notch window on top. -->
+<link rel="stylesheet" href="../../web/css/base.css">
+<style>
+  body { margin: 0; height: 100vh; overflow: hidden; background: #0d1420; font-family: Inter, Roboto, sans-serif; color: #fff; }
+  #wall { position: fixed; inset: 0; background: radial-gradient(120% 70% at 20% 10%, #2f5f8a 0, transparent 60%), radial-gradient(90% 60% at 90% 80%, #6b3fa0 0, transparent 60%), radial-gradient(80% 50% at 10% 95%, #1d8f7a 0, transparent 55%), linear-gradient(180deg, #13263d, #1a1530); }
+  #wall::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.12); }
+  .widget { position: absolute; left: 24px; right: 24px; top: 196px; }
+  .widget .big { font: 300 74px/1 Outfit, sans-serif; letter-spacing: -2px; }
+  .widget .d { font-size: 16px; opacity: .85; margin-top: 6px; }
+  .grid { position: absolute; left: 18px; right: 18px; bottom: 150px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px 8px; }
+  .ic { display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 12px; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+  .ic img { width: 58px; height: 58px; border-radius: 50%; box-shadow: 0 6px 14px rgba(0,0,0,.3); }
+  .dock { position: absolute; left: 22px; right: 22px; bottom: 34px; height: 82px; border-radius: 30px; background: rgba(255,255,255,.14); backdrop-filter: blur(16px); display: flex; justify-content: space-around; align-items: center; }
+  .dock img { width: 56px; height: 56px; border-radius: 50%; }
+  .search { position: absolute; left: 22px; right: 22px; bottom: 128px; display: none; }
+  #ov { position: fixed; top: 0; left: 50%; border: 0; background: transparent; z-index: 50; transform: translateX(-50%); width: 224px; height: 48px; }
+  #ov.full { left: 0; transform: none; width: 100%; height: 92%; }
+  /* share sheet */
+  #share { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #1f232c; border-radius: 28px 28px 0 0; padding: 14px 20px 34px; transform: translateY(105%); transition: transform .45s cubic-bezier(.2,.9,.25,1); }
+  #share.on { transform: none; }
+  #share .grip { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.25); margin: 0 auto 14px; }
+  #share .file { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.06); }
+  #share .file .th { width: 44px; height: 54px; border-radius: 6px; background: linear-gradient(180deg, #fff, #e4e8f0); position: relative; }
+  #share .file .th b { position: absolute; left: 4px; bottom: 5px; font: 800 8px Inter; color: #fff; background: #2BD4A0; padding: 1px 3px; border-radius: 3px; }
+  #share .t1 { font-weight: 600; font-size: 14.5px; } #share .t2 { opacity: .6; font-size: 12px; margin-top: 2px; }
+  #share h4 { margin: 18px 4px 12px; font-size: 13px; opacity: .7; font-weight: 600; }
+  #share .targets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 6px; }
+  #share .tg { display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 11.5px; text-align: center; line-height: 1.25; }
+  #share .tg img { width: 54px; height: 54px; border-radius: 50%; }
+  #share .tg.dt img { border-radius: 16px; background: #11141c; padding: 6px; box-shadow: 0 0 0 2px rgba(94,242,192,.0); transition: box-shadow .2s, transform .2s; }
+  #share .tg.dt.press img { box-shadow: 0 0 0 3px rgba(94,242,192,.7); transform: scale(.92); }
+  /* notification shade */
+  #shade { position: fixed; inset: 0; z-index: 30; display: none; background: rgba(12,14,20,.72); backdrop-filter: blur(22px); padding: 54px 12px 0; }
+  #shade.on { display: block; }
+  .qs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+  .qs div { height: 62px; border-radius: 20px; background: rgba(255,255,255,.09); display: flex; align-items: center; gap: 10px; padding: 0 14px; font-size: 13px; font-weight: 600; }
+  .qs div.on { background: #A8D8C8; color: #0b2a20; }
+  .qs svg { width: 22px; height: 22px; }
+  .nt { border-radius: 26px; background: rgba(38,42,52,.96); padding: 14px 16px; margin-bottom: 3px; }
+  .nt:first-of-type { border-radius: 26px 26px 8px 8px; } .nt:last-of-type { border-radius: 8px 8px 26px 26px; }
+  .nt .hd { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: .75; }
+  .nt .hd .si { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #2BD4A0; }
+  .nt .hd .si.red { background: #F4505E; }
+  .nt .bd { display: flex; gap: 12px; margin-top: 8px; }
+  .nt .tt { font-weight: 650; font-size: 15px; } .nt .tx { font-size: 13.5px; opacity: .8; margin-top: 2px; line-height: 1.4; }
+  .nt .li { width: 44px; height: 44px; border-radius: 50%; flex: none; margin-left: auto; background: rgba(255,255,255,.06); }
+  .nt .ac { display: flex; gap: 8px; margin-top: 12px; }
+  .nt .ac span { padding: 9px 16px; border-radius: 18px; background: rgba(255,255,255,.1); font-size: 13px; font-weight: 600; }
+  .nt .ac span.p { background: #F4505E; color: #fff; }
+  .nt .pr { height: 4px; border-radius: 2px; background: rgba(255,255,255,.12); margin-top: 10px; overflow: hidden; } .nt .pr i { display: block; height: 100%; width: 0; background: #5EF2C0; }
+  /* Files app (cross-app drag source) */
+  #files { position: fixed; inset: 0; z-index: 20; display: none; background: #12151c; padding: 40px 0 0; }
+  #files.on { display: block; }
+  #files .bar { display: flex; align-items: center; gap: 14px; padding: 10px 18px 6px; font: 600 21px Outfit, Inter, sans-serif; }
+  #files .bar svg { width: 22px; height: 22px; }
+  #files .crumb { padding: 2px 18px 12px; color: #9AA3B5; font-size: 13px; }
+  #files .chips { display: flex; gap: 8px; padding: 0 18px 12px; }
+  #files .chips span { padding: 7px 13px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); font-size: 12.5px; color: #C9D0DC; }
+  #files .chips span.on { background: #2b3a55; border-color: #2b3a55; color: #dfe8ff; }
+  #files .row { display: flex; align-items: center; gap: 14px; padding: 11px 18px; transition: background .2s; }
+  #files .row.lift { background: rgba(120,160,255,.16); }
+  #files .fi { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font: 800 9.5px Inter, sans-serif; color: #fff; flex: none; }
+  #files .fn { font-size: 14.5px; font-weight: 550; } #files .fm { font-size: 12px; color: #8F98AA; margin-top: 2px; }
+  #dshadow { position: fixed; left: 0; top: 0; z-index: 58; display: none; pointer-events: none; width: 190px; padding: 9px 12px; border-radius: 14px; background: rgba(40,46,60,.86); box-shadow: 0 14px 30px rgba(0,0,0,.45); align-items: center; gap: 10px; font-size: 13px; font-weight: 600; transform-origin: 20px 20px; }
+  #dshadow.on { display: flex; }
+  /* moods */
+  #moods { position: fixed; inset: 0; z-index: 60; display: none; background: radial-gradient(circle at 50% 30%, #151b28, #0B0D12 70%); padding: 70px 18px 20px; }
+  #moods.on { display: block; }
+  #moods h2 { font: 650 24px Outfit; margin: 0 0 4px; text-align: center; } #moods p { text-align: center; color: #A5ADBD; margin: 0 0 18px; font-size: 13px; }
+  #moods .mg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  #moods .mc { border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column; align-items: center; padding: 8px 4px 10px; font-size: 12px; color: #A5ADBD; font-weight: 600; }
+  #moods canvas { width: 96px; height: 96px; }
+</style>
+</head>
+<body>
+<div id="wall"></div>
+<div class="widget"><div class="big">14:32</div><div class="d">Çarşamba, 4 Kasım · Batman 14°</div></div>
+<div class="grid" id="grid"></div>
+<div class="dock" id="dock"></div>
+<iframe id="ov" src="../../web/notch.html?host=overlay"></iframe>
+<div id="share"><div class="grip"></div><div class="file"><div class="th"><b>APK</b></div><div><div class="t1">kargo_takip_v2.apk</div><div class="t2">Dosyalar · 3,4 MB</div></div></div><h4>Paylaş</h4><div class="targets" id="targets"></div></div>
+<div id="shade"><div class="qs"><div class="on"><svg viewBox="0 0 24 18" fill="#0b2a20"><path d="M12 17l3.5-4.3a5.6 5.6 0 00-7 0zM4.2 8.6l2.2 2.7a8.9 8.9 0 0111.2 0l2.2-2.7a12.3 12.3 0 00-15.6 0z"/></svg>Wi‑Fi</div><div class="on"><svg viewBox="0 0 24 24" fill="none" stroke="#0b2a20" stroke-width="2"><path d="M6 3h12a4 4 0 014 4v1a3 3 0 01-3 3H5a3 3 0 01-3-3V7a4 4 0 014-4z"/><path d="M12 13.5l6 2.5v3c0 1.9-2.6 3.3-6 4-3.4-.7-6-2.1-6-4v-3z"/></svg>Çentikte tara</div><div><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M7 2h10v4l-3 4v11a1 1 0 01-1 1h-2a1 1 0 01-1-1V10L7 6z"/><path d="M12 13v2"/></svg>Fener</div><div><svg viewBox="0 0 24 24" fill="#fff"><path d="M20.5 14.6A8.5 8.5 0 019.4 3.5a8.5 8.5 0 1011.1 11.1z"/></svg>Karanlık tema</div></div><div id="notifs"></div></div>
+<div id="files"><div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>İndirilenler</div><div class="crumb">Dahili depolama › Download</div><div class="chips"><span class="on">Tümü</span><span>Belgeler</span><span>Görseller</span><span>APK</span></div><div id="frows"></div></div>
+<div id="dshadow"><span class="fi" id="dsi"></span><span id="dsn"></span></div>
+<div id="moods"><h2>Mochi'nin ruh halleri</h2><p>Bildirimlerde, çentikte ve uygulamada aynı karakter</p><div class="mg" id="mg"></div></div>
+<script src="../../web/js/bridge.js"></script>
+<script src="../../web/js/i18n.js"></script>
+<script src="../../web/js/i18n-android.js"></script>
+<script src="../../web/js/icons.js"></script>
+<script src="../../web/js/mochi.js"></script>
+<script>
+  const I = window.__mockIcons || {};
+  const ids = ['com.chat.messenger', 'com.photos.gallery', 'com.maps.nav', 'com.music.stream', 'com.mail.client', 'com.calendar.app', 'com.camera.pro', 'com.bankam.mobil'];
+  const names = ['Mesajlar', 'Fotoğraflar', 'Haritalar', 'Müzik', 'Posta', 'Takvim', 'Kamera', 'Bankam'];
+  document.getElementById('grid').innerHTML = ids.map((p, i) => `<div class="ic"><img src="${I[p]}"><span>${names[i]}</span></div>`).join('') + `<div class="ic"><img src="../../web/img/logo.svg" style="background:#11141c;padding:9px;box-sizing:border-box"><span>DT Kalkan</span></div>` + ['com.weather.tr', 'com.files.manager', 'com.fitness.run'].map((p, i) => `<div class="ic"><img src="${I[p]}"><span>${['Hava', 'Dosyalarım', 'Spor'][i]}</span></div>`).join('');
+  document.getElementById('dock').innerHTML = ['com.chat.messenger', 'com.mail.client', 'com.files.manager', 'com.camera.pro'].map(p => `<img src="${I[p]}">`).join('');
+  document.getElementById('targets').innerHTML = [['com.chat.messenger', 'Mesajlar'], ['com.mail.client', 'Posta'], ['dt', 'DT Kalkan ile tara'], ['com.files.manager', 'Dosyalarım'], ['com.photos.gallery', 'Fotoğraflar'], ['com.maps.nav', 'Yakındakiler'], ['com.reader.books', 'Kitaplık'], ['com.calc.pro', 'Kopyala']]
+    .map(([p, n]) => `<div class="tg ${p === 'dt' ? 'dt' : ''}" id="${p === 'dt' ? 'tgdt' : ''}"><img src="${p === 'dt' ? '../../web/img/logo.svg' : I[p]}"><span>${n}</span></div>`).join('');
+  // overlay window emulation: notch.js asks for a window size → resize the iframe exactly like WindowManager.updateViewLayout
+  const ov = document.getElementById('ov');
+  window.__onNotchSize = (p) => { if (p.full) { ov.classList.add('full'); return; } ov.classList.remove('full'); ov.style.width = p.w + 'px'; ov.style.height = p.h + 'px'; };
+  function showShare() { document.getElementById('share').classList.add('on'); }
+  function pickShare() {
+    const tg = document.getElementById('tgdt'); tg.classList.add('press');
+    setTimeout(() => { document.getElementById('share').classList.remove('on'); tg.classList.remove('press');
+      setTimeout(() => ov.contentWindow.Notch.incoming(['/data/user/0/com.developmentturkey.dtkalkan/cache/shared/kargo_takip_v2.apk'], ['kargo_takip_v2.apk']), 380); }, 260);
+  }
+  const S = window.__scene || {};
+  if (S.share) {
+    // shared APK = the synthetic banker test APK → the engine verdict is malicious
+    const orig = window.DTNative.post;
+    window.DTNative.post = (id, kind, m, args) => { if (m === 'scanPaths') { const th = Object.assign({}, __mock.threatApp, { path: JSON.parse(args)[0][0], name: 'kargo_takip_v2.apk', kind: 'apk' }); __mock.DOCS.Dshare = { id: 'Dshare', threatsList: [th], items: [] }; setTimeout(() => __dtRes(id, true, { id: 'Dshare', results: [th], threats: 1 }), 600); return; } orig(id, kind, m, args); };
+  }
+  if (S.shade) { ov.style.display = 'none';
+    document.getElementById('shade').classList.add('on');
+    const shield = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 1.6L20.4 4.8V11c0 5.3-3.5 9.8-8.4 11.4C7.1 20.8 3.6 16.3 3.6 11V4.8z"/></svg>';
+    const m = Mochi.still('alarmed', 88, { noShadow: true });
+    document.getElementById('notifs').innerHTML = `
+      <div class="nt"><div class="hd"><span class="si red">${shield}</span>DT Kalkan · Tehdit uyarıları · şimdi</div><div class="bd"><div style="min-width:0"><div class="tt">Zararlı uygulama yüklendi</div><div class="tx">Sistem Güncelleme — Trojan-Banker.AndroidOS.Generic. Kaldırmanız önerilir.</div></div><img class="li" src="${m}"></div><div class="ac"><span class="p">Kaldır</span><span>Yoksay</span></div></div>
+      <div class="nt"><div class="hd"><span class="si red">${shield}</span>DT Kalkan · Tehdit uyarıları · 2 dk</div><div class="bd"><div style="min-width:0"><div class="tt">Tehdit engellendi</div><div class="tx">eicar_arsiv.zip — EICAR-Test-File</div></div><img class="li" src="${m}"></div><div class="ac"><span class="p">Karantinaya al</span><span>Yoksay</span></div></div>
+      <div class="nt"><div class="hd"><span class="si">${shield}</span>DT Kalkan · Gerçek zamanlı koruma</div><div class="bd"><div style="min-width:0"><div class="tt">DT Kalkan</div><div class="tx">Koruma etkin · 3 klasör izleniyor</div></div></div><div class="ac"><span>Hızlı tarama</span></div></div>`;
+  }
+  if (S.files) {
+    const F = [['fatura.pdf.vbs', 'VBS', '#7A5AF8', '242 B · 14:05'], ['tatil_fotolari.zip', 'ZIP', '#E0A23B', '48,2 MB · Dün'], ['kargo_takip_v2.apk', 'APK', '#2BB673', '3,4 MB · Dün'], ['Kasim_Faturasi.pdf', 'PDF', '#E5484D', '186 KB · 2 Kas'], ['sunum_son.pptx', 'PPT', '#D9622B', '5,1 MB · 1 Kas'], ['IMG_20261031_181204.jpg', 'JPG', '#3B82F6', '3,8 MB · 31 Eki'], ['muzik_listesi.txt', 'TXT', '#64748B', '2 KB · 28 Eki'], ['ozgecmis_2026.docx', 'DOC', '#2563EB', '64 KB · 25 Eki']];
+    document.getElementById('files').classList.add('on');
+    document.getElementById('frows').innerHTML = F.map((f, i) => `<div class="row" data-i="${i}"><span class="fi" style="background:${f[2]}">${f[1]}</span><div><div class="fn">${f[0]}</div><div class="fm">${f[3]}</div></div></div>`).join('');
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+    // Android system drag-and-drop (DRAG_FLAG_GLOBAL) from another app; the overlay window receives ACTION_DRAG_ENTERED/LOCATION/DROP.
+    window.__globalDrag = async (idx) => {
+      const row = document.querySelector(`#frows .row[data-i="${idx}"]`), fi = row.querySelector('.fi'), f = F[idx];
+      const r = fi.getBoundingClientRect(); let x = r.left + r.width / 2, y = r.top + r.height / 2;
+      const fg = document.getElementById('__finger'), sh = document.getElementById('dshadow');
+      const put = () => { fg.style.left = x + 'px'; fg.style.top = y + 'px'; sh.style.transform = `translate(${x - 20}px, ${y - 20}px)`; };
+      fg.style.display = 'block'; fg.style.transform = 'scale(.85)'; put();
+      await wait(420); row.classList.add('lift');
+      const dsi = document.getElementById('dsi'); dsi.textContent = f[1]; dsi.style.background = f[2]; document.getElementById('dsn').textContent = f[0];
+      sh.classList.add('on'); put();
+      const N = () => ov.contentWindow.Notch;
+      const loc = () => { const o = ov.getBoundingClientRect(); return [x - o.left, y - o.top]; };
+      let over = false; const x0 = x, y0 = y, x1 = 206, y1 = 64, steps = 30;
+      for (let i = 1; i <= steps; i++) {
+        const k = i / steps, e = 1 - Math.pow(1 - k, 2.2); x = x0 + (x1 - x0) * e; y = y0 + (y1 - y0) * e; put();
+        if (y < 190 && !over) { over = true; N().xdrag('enter', ...loc()); }
+        else if (over) N().xdrag('move', ...loc());
+        await wait(34);
+      }
+      await wait(650);
+      const [lx, ly] = loc();
+      sh.classList.remove('on'); fg.style.display = 'none'; row.classList.remove('lift');
+      N().xdrop(['/storage/emulated/0/Download/' + f[0]], lx, ly);
+    };
+  }
+  if (S.moods) {
+    document.getElementById('moods').classList.add('on');
+    const L = { idle: 'Nöbette', happy: 'Mutlu', love: 'Sevgi', clean: 'Temiz', proud: 'Gururlu', cool: 'Havalı', scanning: 'Tarıyor', thinking: 'Düşünüyor', question: 'Meraklı', worried: 'Endişeli', alarmed: 'Alarm', angry: 'Kızgın', sleepy: 'Uykulu', dizzy: 'Sersem' };
+    const moods = Object.keys(L).filter(k => !Mochi.MOODS || k in Mochi.MOODS);
+    document.getElementById('mg').innerHTML = moods.map(k => `<div class="mc"><canvas data-m="${k}"></canvas>${L[k]}</div>`).join('');
+    document.querySelectorAll('[data-m]').forEach(c => new Mochi(c, { size: 96, mood: c.dataset.m, noShadow: true }));
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+/* Phone layout for the dynamic notch (overlay window and in-app iframe). Sizes are set inline by notch.js. */
+html, body { background: transparent !important; overflow: hidden; margin: 0; }
+body { height: 100vh; -webkit-tap-highlight-color: transparent; }
+#stage { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-start; }
+html.notch-inapp #stage { transform: translateX(var(--cxo, 0px)); pointer-events: none; }
+html.notch-inapp #pill { pointer-events: auto; }
+body.island #stage { padding-top: 6px; }
+#pill { width: 200px; height: var(--nh, 36px); border-radius: 0 0 22px 22px; box-shadow: 0 8px 22px -6px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04) inset; touch-action: manipulation; }
+body.island #pill { border-radius: calc(var(--nh, 36px) / 2); }
+#pill.s-hover { border-radius: 0 0 32px 32px; } #pill.s-drag, #pill.s-scan, #pill.s-result { border-radius: 0 0 36px 36px; } #pill.s-alert { border-radius: 0 0 30px 30px; }
+body.island #pill.s-hover, body.island #pill.s-drag, body.island #pill.s-scan, body.island #pill.s-result, body.island #pill.s-alert { border-radius: 32px; }
+
+/* idle: Mochi + clock on the left of the camera, weather on the right */
+#idle { height: var(--nh, 36px); padding: 0 14px 0 10px; display: flex; align-items: center; justify-content: space-between; }
+#idle .lft { display: flex; align-items: center; gap: 4px; min-width: 0; }
+#idle canvas#miniM { width: 28px; height: 28px; flex: none; margin: -2px 0 -2px -4px; }
+#idle .clock { font-size: 13.5px; }
+#idle .wx { font-size: 13px; gap: 4px; }
+#idle .prog { font-size: 12.5px; gap: 5px; }
+
+/* expanded */
+#hover { padding: calc(var(--nh, 36px) + 6px) 18px 16px; }
+#hover .top { gap: 10px; }
+#hover canvas { width: 66px; height: 66px; margin: -8px -6px -8px -8px; }
+#hover .st-t { font-size: 17px; gap: 7px; }
+#hover .st-s { font-size: 12px; }
+#hover .big-clock .c { font-size: 28px; }
+#hover .big-clock .dt { font-size: 11px; max-width: 108px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#hover .bottom { gap: 8px; margin-top: 14px; }
+.wcard { height: 50px; padding: 0 12px; gap: 9px; border-radius: 15px; }
+.wcard .wt { font-size: 19px; }
+.wcard .wd { font-size: 11.5px; }
+.nbtn { height: 50px; padding: 0 12px; border-radius: 15px; font-size: 12.5px; gap: 6px; }
+.nbtn.sm { height: 34px; padding: 0 11px; font-size: 12px; border-radius: 11px; }
+
+#drop { padding-top: calc(var(--nh, 36px) - 6px); }
+#drop canvas { width: 108px; height: 108px; }
+#drop .dt { font-size: 15px; }
+#scanL { gap: 12px; padding: calc(var(--nh, 36px) + 2px) 18px 0 14px; }
+#scanL canvas { width: 104px; height: 104px; }
+#scanL .tt { font-size: 18px; }
+#scanL .fn { font-size: 12px; }
+#scanL .thr { font-size: 11px; }
+#scanL .acts { flex-wrap: nowrap; gap: 5px; }
+#alert { padding: calc(var(--nh, 36px) - 2px) 18px 0 12px; }
+#alert canvas { width: 72px; height: 72px; }
+
+/* paper carries the app icon when an app is dragged in */
+#paper img { display: none; }
+#paper.app .pg, #paper.app .fold, #paper.app .ext, #paper.app .ln { display: none; }
+#paper.app img { display: block; position: absolute; inset: 2px 0 10px; width: 46px; height: 46px; border-radius: 12px; box-shadow: 0 10px 22px rgba(0,0,0,.5); }
+#paper.app.bad img { box-shadow: 0 0 0 2px #F4505E, 0 10px 22px rgba(244,80,94,.45); }
+
+/* narrow phone widths: let secondary lines wrap to two lines instead of being cut with an ellipsis */
+#hover .st-s { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+.wcard .wd { white-space: normal; line-height: 1.2; }
+#scanL .thr, #alert .ath { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }

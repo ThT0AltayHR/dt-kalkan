@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../src/renderer/css/base.css">
+<style>body{margin:0;background:radial-gradient(circle at 50% 30%,#141a26,#0B0D12);display:grid;grid-template-columns:repeat(7,1fr);padding:18px 10px;gap:0;color:#A5ADBD;font:600 13px Outfit}
+div{text-align:center} canvas{width:136px;height:136px;display:block;margin:0 auto}</style></head><body>
+<script src="../src/renderer/js/mochi.js"></script>
+<script>
+const L={happy:'Mutlu',scanning:'Tarıyor',thinking:'Düşünüyor',worried:'Endişeli',alarmed:'Alarm',angry:'Kızgın (virüse)',proud:'Gururlu',sleepy:'Uykulu',clean:'Temiz',love:'Sevgi',cool:'Havalı',dizzy:'Sersem',question:'Soru',idle:'Boşta'};
+const moods=['happy','scanning','thinking','worried','alarmed','angry','proud','sleepy','clean','love','cool','dizzy','question','idle'];
+for(const m of moods){const d=document.createElement('div');const c=document.createElement('canvas');d.appendChild(c);d.append(L[m]);document.body.appendChild(d);const x=new Mochi(c,{size:136,mood:m});setInterval(()=>{if(['clean','proud','dizzy','love','alarmed','angry'].includes(m)){x.setMood('idle',true);x.setMood(m);}},2600);}
+</script></body></html>

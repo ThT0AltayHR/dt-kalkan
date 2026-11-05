@@ -1,0 +1,22 @@
+{
+  "name": "dt-kalkan",
+  "version": "1.0.0",
+  "description": "DT Kalkan",
+  "main": "src/main/index.js",
+  "scripts": {
+    "start": "electron .",
+    "rules": "node tools/build-rules.js",
+    "dist": "node tools/build-win.js"
+  },
+  "author": "Development Turkey",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@electron/asar": "^4.3.1",
+    "@electron/packager": "^18.4.4",
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "resedit": "^2.0.3"
+  },
+  "productName": "DT Kalkan",
+  "private": true
+}

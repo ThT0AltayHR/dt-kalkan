@@ -1,0 +1,738 @@
+// DT Kalkan detection rules — © 2026 Development Turkey. All rights reserved.
+// Compiled and encoded into data/rules.dat at build time.
+
+// ═════════════ Test files ═════════════
+rule Test_EICAR {
+  name: "EICAR-Test-File"
+  score: 100
+  desc: "EICAR antivirüs test imzası"
+  strings:
+    $a = "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
+  condition: $a and filesize < 512
+}
+
+// ═════════════ Cryptocurrency miners ═════════════
+rule Miner_Stratum_Generic {
+  name: "Trojan.Win32.CoinMiner.Gen"
+  score: 75
+  scope: pe, script, text
+  desc: "Gizli kripto para madenciliği (stratum havuz bağlantısı)"
+  strings:
+    $s1 = "stratum+tcp://" nocase
+    $s2 = "stratum+ssl://" nocase
+    $s3 = "stratum2+tcp://" nocase
+    $p1 = "--donate-level" nocase
+    $p2 = "\"donate-level\"" nocase
+    $p3 = "cryptonight" nocase
+    $p4 = "randomx" nocase
+    $p5 = "--cpu-max-threads-hint" nocase
+    $p6 = "nicehash" nocase
+    $p7 = "-o pool." nocase
+    $w = /\b4[0-9AB][1-9A-HJ-NP-Za-km-z]{93}\b/
+  condition: any of ($s*) and (any of ($p*) or $w)
+}
+
+rule Miner_XMRig {
+  name: "Trojan.Win32.CoinMiner.XMRig"
+  score: 70
+  scope: pe, script, text
+  desc: "XMRig madenci bileşeni"
+  strings:
+    $a = "xmrig" nocase
+    $b = "XMRig/%s" 
+    $c = "\"randomx\"" nocase
+    $d = "--coin=monero" nocase
+    $e = "pool.supportxmr.com" nocase
+    $f = "moneroocean" nocase
+    $g = "hashvault.pro" nocase
+    $h = "nanopool.org" nocase
+  condition: ($a and ($c or $d)) or $b or 2 of ($e, $f, $g, $h)
+}
+
+rule Miner_Hidden_Launch {
+  name: "Trojan.Script.CoinMiner.Launcher"
+  score: 70
+  scope: script, text
+  desc: "Madencinin gizli pencerede başlatılması"
+  strings:
+    $a = "-WindowStyle Hidden" nocase
+    $b = "xmrig" nocase
+    $c = "stratum" nocase
+    $d = "--background" nocase
+    $e = "nheqminer" nocase
+    $f = "phoenixminer" nocase
+    $g = "t-rex" nocase
+  condition: ($a or $d) and ($b or $c or $e or $f or $g)
+}
+
+// ═════════════ Information stealers ═════════════
+rule Stealer_Browser_Credentials {
+  name: "Trojan.Win32.Stealer.Gen"
+  score: 80
+  scope: pe, script, dotnet
+  desc: "Birden çok tarayıcının kayıtlı parola ve çerez dosyalarına erişim + veri sızdırma"
+  strings:
+    $b1 = "\\Google\\Chrome\\User Data" nocase wide ascii
+    $b2 = "\\Microsoft\\Edge\\User Data" nocase wide ascii
+    $b3 = "\\BraveSoftware\\Brave-Browser" nocase wide ascii
+    $b4 = "\\Opera Software\\Opera Stable" nocase wide ascii
+    $b5 = "\\Yandex\\YandexBrowser" nocase wide ascii
+    $b6 = "\\Mozilla\\Firefox\\Profiles" nocase wide ascii
+    $b7 = "\\Vivaldi\\User Data" nocase wide ascii
+    $f1 = "Login Data" wide ascii
+    $f2 = "logins.json" wide ascii
+    $f3 = "key4.db" wide ascii
+    $f4 = "Web Data" wide ascii
+    $f5 = "encrypted_key" wide ascii
+    $x1 = "api.telegram.org/bot" nocase wide ascii
+    $x2 = "discord.com/api/webhooks" nocase wide ascii
+    $x3 = "discordapp.com/api/webhooks" nocase wide ascii
+    $x4 = "multipart/form-data" nocase wide ascii
+    $x5 = "CryptUnprotectData" wide ascii
+    $x6 = "SELECT origin_url, username_value, password_value" nocase wide ascii
+    $x7 = "SELECT action_url, username_value, password_value" nocase wide ascii
+  condition: 3 of ($b*) and 2 of ($f*) and (any of ($x1, $x2, $x3, $x6, $x7) or ($x4 and $x5))
+}
+
+rule Stealer_SQL_Password_Query {
+  name: "Trojan.Win32.Stealer.PassDump"
+  score: 70
+  scope: pe, script, dotnet
+  desc: "Tarayıcı parola veritabanını sorgulama"
+  strings:
+    $q1 = "username_value, password_value" nocase wide ascii
+    $q2 = "FROM logins" nocase wide ascii
+    $q3 = "FROM cookies" nocase wide ascii
+    $q4 = "FROM credit_cards" nocase wide ascii
+    $k = "encrypted_key" wide ascii
+  condition: $q1 and ($q2 or $q3 or $q4) and $k
+}
+
+rule Stealer_Discord_Token {
+  name: "Trojan.Win32.Stealer.DiscordGrabber"
+  score: 85
+  scope: pe, script, text, dotnet
+  desc: "Discord oturum anahtarı (token) çalma"
+  strings:
+    $d1 = "\\discord\\Local Storage\\leveldb" nocase wide ascii
+    $d2 = "\\discordcanary\\Local Storage" nocase wide ascii
+    $d3 = "\\discordptb\\Local Storage" nocase wide ascii
+    $d4 = "Local Storage\\leveldb" nocase wide ascii
+    $d5 = "discord" nocase wide ascii
+    $r1 = /[\w-]{24}\.[\w-]{6}\.[\w-]{27}/
+    $r2 = /mfa\.[\w-]{84}/
+    $r3 = "dQw4w9WgXcQ:" wide ascii
+    $r4 = "[\\w-]{24}\\.[\\w-]{6}\\.[\\w-]{27}" wide ascii
+    $x1 = "discord.com/api/webhooks" nocase wide ascii
+    $x2 = "discordapp.com/api/webhooks" nocase wide ascii
+    $x3 = "api.telegram.org/bot" nocase wide ascii
+    $x4 = "/api/v9/users/@me" nocase wide ascii
+  condition: (any of ($d1, $d2, $d3) or ($d4 and $d5)) and (any of ($r*) or any of ($x*))
+}
+
+rule Stealer_Telegram_Exfil {
+  name: "Trojan.Win32.Stealer.TgExfil"
+  score: 60
+  scope: pe, script, dotnet
+  desc: "Toplanan verilerin Telegram botuna gönderilmesi"
+  strings:
+    $t = "api.telegram.org/bot" nocase wide ascii
+    $s1 = "/sendDocument" nocase wide ascii
+    $c1 = "\\Telegram Desktop\\tdata" nocase wide ascii
+    $c2 = "wallet.dat" nocase wide ascii
+    $c3 = "\\Exodus\\exodus.wallet" nocase wide ascii
+    $c4 = "\\Electrum\\wallets" nocase wide ascii
+    $c5 = "Login Data" wide ascii
+    $c6 = "screenshot" nocase wide ascii
+    $c7 = "\\Steam\\config" nocase wide ascii
+  condition: $t and $s1 and 2 of ($c*)
+}
+
+rule Stealer_Crypto_Wallets {
+  name: "Trojan.Win32.Stealer.Wallet"
+  score: 70
+  scope: pe, script, dotnet
+  desc: "Kripto cüzdan dosyalarını toplama"
+  strings:
+    $w1 = "\\Exodus\\exodus.wallet" nocase wide ascii
+    $w2 = "\\Electrum\\wallets" nocase wide ascii
+    $w3 = "\\Atomic\\Local Storage" nocase wide ascii
+    $w4 = "\\Ethereum\\keystore" nocase wide ascii
+    $w5 = "\\Armory" nocase wide ascii
+    $w6 = "nkbihfbeogaeaoehlefnkodbefgpgknn" wide ascii
+    $w7 = "bfnaelmomeimhlpmgjnjophhpkkoljpa" wide ascii
+    $w8 = "\\Coinomi\\Coinomi\\wallets" nocase wide ascii
+    $w9 = "wallet.dat" nocase wide ascii
+  condition: 4 of them
+}
+
+rule Stealer_Families_Strings {
+  name: "Trojan.Win32.Stealer.Family"
+  score: 90
+  scope: pe, script, dotnet
+  desc: "Bilinen bilgi hırsızı ailesine ait izler (RedLine/Raccoon/Vidar/Lumma/AgentTesla)"
+  strings:
+    $a1 = "RedLine.Reburn" wide ascii
+    $a2 = "RedLine.Logic" wide ascii
+    $a3 = "ScannedBrowser" wide ascii
+    $a4 = "ScanPasswords" wide ascii
+    $b1 = "Raccoon Stealer" nocase wide ascii
+    $b2 = "machineId=" wide ascii
+    $b3 = "configId=" wide ascii
+    $c1 = "LummaC2" nocase wide ascii
+    $c2 = "lid=%s&j=%s" wide ascii
+    $d1 = "Vidar" wide ascii
+    $d2 = "\\files\\passwords.txt" nocase wide ascii
+    $d3 = "\\files\\information.txt" nocase wide ascii
+    $e1 = "AgentTesla" nocase wide ascii
+    $e2 = "smtp.yandex" nocase wide ascii
+    $e3 = "PW_" wide ascii
+  condition: ($a1 or $a2) or ($a3 and $a4) or ($b1) or ($b2 and $b3) or $c1 or $c2 or ($d1 and ($d2 or $d3)) or ($e1 and ($e2 or $e3))
+}
+
+// ═════════════ Remote access trojans ═════════════
+rule RAT_AsyncRAT {
+  name: "Backdoor.MSIL.AsyncRAT"
+  score: 90
+  scope: pe, dotnet
+  desc: "AsyncRAT uzaktan erişim truva atı izleri"
+  strings:
+    $a = "AsyncClient" wide ascii
+    $b = "Pastebin" wide ascii
+    $c = "Anti_Analysis" wide ascii
+    $d = "ClientSocket" wide ascii
+    $e = "MessagePackLib" wide ascii
+    $f = "Plugin.Plugin" wide ascii
+    $g = "AsyncRAT" nocase wide ascii
+  condition: $g or 4 of ($a, $b, $c, $d, $e, $f)
+}
+
+rule RAT_njRAT {
+  name: "Backdoor.MSIL.Bladabindi"
+  score: 90
+  scope: pe, dotnet, script
+  desc: "njRAT (Bladabindi) uzaktan erişim truva atı"
+  strings:
+    $a = "netsh firewall add allowedprogram" nocase wide ascii
+    $b = "|'|'|" wide ascii
+    $c = "cmd.exe /c ping 0 -n 2 & del" nocase wide ascii
+    $d = "SEE_MASK_NOZONECHECKS" wide ascii
+    $e = "njRAT" nocase wide ascii
+  condition: $e or 3 of ($a, $b, $c, $d)
+}
+
+rule RAT_QuasarRAT {
+  name: "Backdoor.MSIL.Quasar"
+  score: 90
+  scope: pe, dotnet
+  desc: "Quasar RAT uzaktan erişim aracı"
+  strings:
+    $a = "Quasar.Common" wide ascii
+    $b = "Quasar.Client" wide ascii
+    $c = "xClient.Core" wide ascii
+    $d = "GetKeyloggerLogsDirectory" wide ascii
+    $e = "DoShellExecute" wide ascii
+    $f = "DoProcessKill" wide ascii
+  condition: $a or $b or $c or 2 of ($d, $e, $f)
+}
+
+rule RAT_Remcos_DarkComet {
+  name: "Backdoor.Win32.Remcos"
+  score: 90
+  scope: pe
+  desc: "Remcos / DarkComet uzaktan erişim truva atı"
+  strings:
+    $a = "Remcos_Mutex_Inj" wide ascii
+    $b = "Breaking-Security.Net" nocase wide ascii
+    $c = "remcos" nocase wide ascii
+    $d = "licence_code.txt" wide ascii
+    $e = "DC_MUTEX-" wide ascii
+    $f = "#BOT#URLDownload" wide ascii
+    $g = "DarkComet" wide ascii
+  condition: $a or $b or ($c and $d) or $e or $f or $g
+}
+
+rule RAT_Generic_Behaviour {
+  name: "Backdoor.Win32.RAT.Gen"
+  score: 65
+  scope: pe, dotnet, script
+  desc: "Uzaktan kontrol komut seti (webcam, keylogger, uzak masaüstü, kabuk)"
+  strings:
+    $a = "webcam" nocase wide ascii
+    $b = "keylog" nocase wide ascii
+    $c = "remotedesktop" nocase wide ascii
+    $d = "reverse shell" nocase wide ascii
+    $e = "getpasswords" nocase wide ascii
+    $f = "uninstall_client" nocase wide ascii
+    $g = "HiddenVNC" nocase wide ascii
+    $h = "hvnc" nocase wide ascii
+    $i = "capscreen" nocase wide ascii
+  condition: 4 of them
+}
+
+// ═════════════ Ransomware ═════════════
+rule Ransom_Shadow_Delete {
+  name: "Trojan-Ransom.Win32.ShadowWipe"
+  score: 85
+  scope: pe, script, text, dotnet
+  desc: "Gölge kopyaları ve kurtarma noktalarını silme (fidye yazılımı davranışı)"
+  strings:
+    $a = "vssadmin delete shadows" nocase wide ascii
+    $a2 = "vssadmin.exe delete shadows" nocase wide ascii
+    $b = "shadowcopy delete" nocase wide ascii
+    $c = "bcdedit /set {default} recoveryenabled no" nocase wide ascii
+    $d = "bcdedit.exe /set {default} recoveryenabled no" nocase wide ascii
+    $e = "wbadmin delete catalog" nocase wide ascii
+    $f = "bootstatuspolicy ignoreallfailures" nocase wide ascii
+    $g = "Win32_ShadowCopy" nocase wide ascii
+  condition: 2 of them or (($a or $a2) and filesize < 3MB)
+}
+
+rule Ransom_Note {
+  name: "Trojan-Ransom.Note"
+  score: 70
+  scope: text, script, pe
+  desc: "Fidye notu içeriği"
+  strings:
+    $a = "your files have been encrypted" nocase wide ascii
+    $b = "all your files are encrypted" nocase wide ascii
+    $c = "to decrypt your files" nocase wide ascii
+    $d = "bitcoin" nocase wide ascii
+    $e = "private key" nocase wide ascii
+    $f = ".onion" nocase wide ascii
+    $g = "do not try to recover" nocase wide ascii
+    $h = "dosyalarınız şifrelendi" nocase
+    $i = "decryptor" nocase wide ascii
+    $j = "tor browser" nocase wide ascii
+  condition: (any of ($a, $b, $c, $h)) and 2 of ($d, $e, $f, $g, $i, $j)
+}
+
+rule Ransom_Extension_List {
+  name: "Trojan-Ransom.Win32.Encoder.Gen"
+  score: 65
+  scope: pe, dotnet, script
+  desc: "Toplu dosya şifreleme listesi ve fidye uzantıları"
+  strings:
+    $e1 = ".locked" wide ascii
+    $e2 = ".crypted" wide ascii
+    $e3 = ".encrypted" wide ascii
+    $e4 = ".lockbit" nocase wide ascii
+    $e5 = "README_DECRYPT" nocase wide ascii
+    $e6 = "HOW_TO_DECRYPT" nocase wide ascii
+    $e7 = "RESTORE_FILES" nocase wide ascii
+    $c1 = "CryptEncrypt" wide ascii
+    $c2 = "BCryptEncrypt" wide ascii
+    $c3 = "RijndaelManaged" wide ascii
+    $c4 = "AesCryptoServiceProvider" wide ascii
+    $x1 = ".docx" wide ascii
+    $x2 = ".xlsx" wide ascii
+    $x3 = ".jpg" wide ascii
+    $x4 = ".sql" wide ascii
+    $x5 = ".pdf" wide ascii
+  condition: 2 of ($e*) and any of ($c*) and 4 of ($x*)
+}
+
+// ═════════════ PowerShell / encoded droppers ═════════════
+rule PS_Encoded_Command {
+  name: "Trojan.PowerShell.EncodedDropper"
+  score: 60
+  scope: script, text, pe, lnk
+  desc: "Gizlenmiş (Base64) PowerShell komutu"
+  strings:
+    $p = "powershell" nocase wide ascii
+    $e1 = /-e(nc|ncodedcommand|c)?\s+[A-Za-z0-9+\/]{60,}={0,2}/i
+    $e2 = "-EncodedCommand" nocase wide ascii
+    $h = /-w(indowstyle)?\s+h(idden)?\b/i
+    $n = /-nop(rofile)?\b/i
+    $b = /-ep\s+bypass|-executionpolicy\s+bypass/i
+  condition: $p and ($e1 or $e2) and ($h or $n or $b)
+}
+
+rule PS_Download_Execute {
+  name: "Trojan-Downloader.PowerShell.Gen"
+  score: 75
+  scope: script, text, lnk
+  desc: "İnternetten kod indirip doğrudan çalıştırma (download & execute)"
+  strings:
+    $d1 = "DownloadString(" nocase wide ascii
+    $d2 = "DownloadFile(" nocase wide ascii
+    $d3 = "Invoke-WebRequest" nocase wide ascii
+    $d4 = "Net.WebClient" nocase wide ascii
+    $d5 = "Start-BitsTransfer" nocase wide ascii
+    $d6 = /\biwr\s+(-uri\s+)?https?:/i
+    $d7 = "DownloadData(" nocase wide ascii
+    $x1 = "IEX" wide ascii
+    $x2 = "Invoke-Expression" nocase wide ascii
+    $x3 = "Start-Process" nocase wide ascii
+    $x4 = "[Reflection.Assembly]::Load" nocase wide ascii
+    $x5 = "| iex" nocase wide ascii
+    $x6 = "&(" wide ascii
+    $h = /-w(indowstyle)?\s+h(idden)?\b/i
+  condition: any of ($d*) and (any of ($x1, $x2, $x4, $x5) or ($x3 and $h) or ($x6 and $h))
+}
+
+rule PS_AMSI_Bypass {
+  name: "HackTool.PowerShell.AmsiBypass"
+  score: 85
+  scope: script, text, pe, dotnet
+  desc: "Windows güvenlik taramasını (AMSI) devre dışı bırakma girişimi"
+  strings:
+    $a = "AmsiUtils" nocase wide ascii
+    $b = "amsiInitFailed" nocase wide ascii
+    $c = "AmsiScanBuffer" wide ascii
+    $d = "Set-MpPreference -DisableRealtimeMonitoring $true" nocase wide ascii
+    $e = "DisableRealtimeMonitoring" nocase wide ascii
+    $f = "Add-MpPreference -ExclusionPath" nocase wide ascii
+    $g = "System.Management.Automation" wide ascii
+  condition: ($a and $b) or ($c and $g) or $d or ($e and $f) or ($f and filesize < 200KB)
+}
+
+rule PS_Obfuscation {
+  name: "Trojan.PowerShell.Obfuscated"
+  score: 45
+  scope: script
+  desc: "Ağır biçimde karıştırılmış (obfuscated) betik"
+  strings:
+    $a = /\[char\]\s*\d{2,3}\s*\+\s*\[char\]\s*\d{2,3}/i
+    $b = /('[a-z]{1,3}'\s*\+\s*){8,}/i
+    $c = "-join" nocase
+    $d = /FromBase64String/i
+    $e = /\$\{?env:comspec\}?\[\d+,\d+/i
+    $f = /-bxor\s*\d+/i
+  condition: #a > 5 or $b or $e or ($c and $d and $f)
+}
+
+// ═════════════ Script malware (VBS/JS/BAT/HTA) ═════════════
+rule VBS_Dropper {
+  name: "Trojan-Dropper.VBS.Agent"
+  score: 75
+  scope: script, text
+  desc: "VBScript ile dosya indirip çalıştırma"
+  strings:
+    $a = "CreateObject(\"WScript.Shell\")" nocase
+    $b = "MSXML2.XMLHTTP" nocase
+    $c = "ADODB.Stream" nocase
+    $d = ".SaveToFile" nocase
+    $e = ".Run" nocase
+    $f = "WinHttp.WinHttpRequest" nocase
+    $g = "Microsoft.XMLHTTP" nocase
+  condition: ($b or $f or $g) and $c and $d and ($a or $e)
+}
+
+rule JS_WSH_Dropper {
+  name: "Trojan-Dropper.JS.Agent"
+  score: 75
+  scope: script, text
+  desc: "JScript/WSH ile zararlı dosya indirme"
+  strings:
+    $a = "new ActiveXObject(" nocase
+    $b = "WScript.Shell" nocase
+    $c = "ADODB.Stream" nocase
+    $d = "MSXML2.XMLHTTP" nocase
+    $e = "SaveToFile" nocase
+    $f = "%TEMP%" nocase
+    $g = ".Run(" nocase
+    $h = "WinHttp.WinHttpRequest" nocase
+  condition: $a and ($d or $h) and ($c or $e) and ($b or $g or $f)
+}
+
+rule JS_Obfuscated_Eval {
+  name: "Trojan.JS.Obfuscated"
+  score: 50
+  scope: script
+  desc: "eval ile çözülen gizlenmiş JavaScript"
+  strings:
+    $a = /eval\s*\(\s*(function\s*\(p,a,c,k,e,[dr]\)|unescape\(|atob\(|String\.fromCharCode\()/i
+    $b = /\\x[0-9a-f]{2}(\\x[0-9a-f]{2}){60,}/i
+    $c = /(%u[0-9a-f]{4}){30,}/i
+    $d = "ActiveXObject" nocase
+  condition: ($a and ($b or $c or $d)) or ($b and $d) or $c
+}
+
+rule BAT_Malicious {
+  name: "Trojan.BAT.Agent"
+  score: 70
+  scope: script, text
+  desc: "Toplu iş dosyası ile güvenliği kapatma / kalıcılık / indirme"
+  strings:
+    $a = "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\"" nocase
+    $b = "DisableAntiSpyware" nocase
+    $c = "netsh advfirewall set allprofiles state off" nocase
+    $d = "schtasks /create" nocase
+    $e = "certutil -urlcache -split -f" nocase
+    $e2 = "certutil.exe -urlcache" nocase
+    $f = "bitsadmin /transfer" nocase
+    $g = "attrib +h +s" nocase
+    $h = "\\CurrentVersion\\Run" nocase
+    $i = "taskkill /f /im MsMpEng.exe" nocase
+    $j = "sc stop WinDefend" nocase
+  condition: ($a and $b) or $c or $i or $j or (($e or $e2 or $f) and ($d or $g or $h)) or 3 of ($d, $e, $e2, $f, $g, $h)
+}
+
+rule HTA_MSHTA_Abuse {
+  name: "Trojan.HTA.Agent"
+  score: 70
+  scope: script, text, lnk
+  desc: "MSHTA / HTA ile uzaktan betik çalıştırma"
+  strings:
+    $a = "mshta" nocase wide ascii
+    $b = /mshta(\.exe)?\s+(vbscript|javascript):/i
+    $c = /mshta(\.exe)?\s+["']?https?:\/\//i
+    $d = "<HTA:APPLICATION" nocase
+    $e = "WScript.Shell" nocase
+    $f = "powershell" nocase
+  condition: $b or $c or ($d and $e and $f)
+}
+
+rule LOLBIN_Abuse {
+  name: "Trojan.Win32.LOLBin.Gen"
+  score: 60
+  scope: script, text, lnk
+  desc: "Sistem araçlarının kötüye kullanımı (regsvr32/rundll32/certutil)"
+  strings:
+    $a = /regsvr32(\.exe)?\s+\/s\s+\/n\s+\/u\s+\/i:https?:/i
+    $b = /rundll32(\.exe)?\s+javascript:/i
+    $c = /certutil(\.exe)?\s+-decode/i
+    $d = /certutil(\.exe)?\s+-urlcache/i
+    $e = /wmic\s+process\s+call\s+create/i
+    $f = /msiexec(\.exe)?\s+\/q\s*\/i\s*https?:/i
+  condition: any of them
+}
+
+rule LNK_Malicious {
+  name: "Trojan.LNK.Downloader"
+  score: 80
+  scope: lnk
+  desc: "Kısayol (LNK) dosyası içinde gizli komut"
+  strings:
+    $a = "powershell" nocase wide ascii
+    $b = "cmd.exe" nocase wide ascii
+    $c = "mshta" nocase wide ascii
+    $d = "http" nocase wide ascii
+    $e = "-w hidden" nocase wide ascii
+    $f = "-windowstyle hidden" nocase wide ascii
+    $g = "/c start" nocase wide ascii
+    $h = "FromBase64String" nocase wide ascii
+  condition: ($a or $c or $b) and ($d or $h) and ($e or $f or $g or $h)
+}
+
+// ═════════════ Office macros ═════════════
+rule Office_Macro_AutoExec_Downloader {
+  name: "Trojan-Downloader.MSOffice.Macro"
+  score: 85
+  scope: office, text
+  desc: "Otomatik çalışan makro ile dosya indirme/çalıştırma"
+  strings:
+    $a1 = "AutoOpen" nocase
+    $a2 = "Document_Open" nocase
+    $a3 = "Workbook_Open" nocase
+    $a4 = "Auto_Open" nocase
+    $a5 = "Document_Close" nocase
+    $s1 = "Shell(" nocase
+    $s2 = "WScript.Shell" nocase
+    $s3 = "powershell" nocase
+    $s4 = "URLDownloadToFile" nocase
+    $s5 = "MSXML2.XMLHTTP" nocase
+    $s6 = "ADODB.Stream" nocase
+    $s7 = "CreateObject(" nocase
+    $s8 = "Environ(\"TEMP\")" nocase
+    $s9 = "CallByName" nocase
+  condition: any of ($a*) and 2 of ($s*)
+}
+
+rule Office_Macro_Suspicious {
+  name: "HEUR:Trojan.MSOffice.SuspMacro"
+  score: 45
+  scope: office
+  desc: "Şüpheli makro (otomatik çalışma + kod gizleme)"
+  strings:
+    $a1 = "AutoOpen" nocase
+    $a2 = "Document_Open" nocase
+    $a3 = "Workbook_Open" nocase
+    $o1 = "Chr(" nocase
+    $o2 = "StrReverse" nocase
+    $o3 = "Base64" nocase
+    $o4 = "Lib \"kernel32\"" nocase
+    $o5 = "VirtualAlloc" nocase
+    $o6 = "RtlMoveMemory" nocase
+  condition: any of ($a*) and (#o1 > 20 or $o2 or $o3 or ($o4 and ($o5 or $o6)))
+}
+
+rule Office_Macro_Present {
+  name: "Macro.Office.Generic"
+  score: 15
+  scope: office
+  desc: "Belge makro (VBA) içeriyor"
+  strings:
+    $a = "vbaProject.bin" nocase
+    $b = "_VBA_PROJECT" wide ascii
+    $c = "Attribute VB_Name" nocase
+  condition: any of them
+}
+
+// ═════════════ Game cheats / cracks / droppers ═════════════
+rule Cheat_Crack_Dropper {
+  name: "Trojan-Dropper.Win32.FakeCrack"
+  score: 70
+  scope: pe, script, dotnet
+  desc: "Oyun hilesi / crack görünümlü yükleyici (zararlı dağıtımda yaygın)"
+  strings:
+    $c1 = "crack" nocase wide ascii
+    $c2 = "keygen" nocase wide ascii
+    $c3 = "aimbot" nocase wide ascii
+    $c4 = "wallhack" nocase wide ascii
+    $c5 = "injector" nocase wide ascii
+    $c6 = "loader.exe" nocase wide ascii
+    $c7 = "bypass anticheat" nocase wide ascii
+    $c8 = "spoofer" nocase wide ascii
+    $d1 = "URLDownloadToFile" wide ascii
+    $d2 = "DownloadFile" wide ascii
+    $d3 = "Add-MpPreference -ExclusionPath" nocase wide ascii
+    $d4 = "discord.com/api/webhooks" nocase wide ascii
+    $d5 = "cdn.discordapp.com/attachments" nocase wide ascii
+    $d6 = "api.telegram.org/bot" nocase wide ascii
+    $d7 = "pastebin.com/raw" nocase wide ascii
+  condition: 2 of ($c*) and 2 of ($d*)
+}
+
+rule Dropper_Discord_CDN {
+  name: "Trojan-Downloader.Win32.DiscordCDN"
+  score: 55
+  scope: pe, script, text, dotnet
+  desc: "Discord CDN üzerinden çalıştırılabilir indirme"
+  strings:
+    $a = /cdn\.discordapp\.com\/attachments\/\d+\/\d+\/[\w.-]+\.(exe|dll|scr|bat|ps1|vbs|zip|rar)/i
+    $b = /media\.discordapp\.net\/attachments\/\d+\/\d+\/[\w.-]+\.(exe|dll|scr|bat|ps1)/i
+  condition: any of them
+}
+
+rule Dropper_Pastebin_Raw {
+  name: "Trojan-Downloader.Gen.PasteSite"
+  score: 45
+  scope: pe, script, dotnet
+  desc: "Yük/ayar dosyasını paste sitesinden çekme"
+  strings:
+    $a = "pastebin.com/raw/" nocase wide ascii
+    $b = "paste.ee/r/" nocase wide ascii
+    $c = "rentry.co/" nocase wide ascii
+    $x1 = "FromBase64String" wide ascii
+    $x2 = "Assembly.Load" wide ascii
+    $x3 = "Invoke" wide ascii
+  condition: any of ($a, $b, $c) and 2 of ($x*)
+}
+
+// ═════════════ Keyloggers / spyware ═════════════
+rule Keylogger_Generic {
+  name: "Spyware.Win32.Keylogger.Gen"
+  score: 65
+  scope: pe, dotnet, script
+  desc: "Tuş vuruşu kaydı ve dışarı gönderme"
+  strings:
+    $k1 = "GetAsyncKeyState" wide ascii
+    $k2 = "SetWindowsHookEx" wide ascii
+    $k3 = "WH_KEYBOARD_LL" wide ascii
+    $w = "GetForegroundWindow" wide ascii
+    $t = "GetWindowText" wide ascii
+    $l1 = "[ENTER]" nocase wide ascii
+    $l2 = "[BACKSPACE]" nocase wide ascii
+    $l3 = "[CAPSLOCK]" nocase wide ascii
+    $l4 = "keylog" nocase wide ascii
+    $x1 = "smtp" nocase wide ascii
+    $x2 = "api.telegram.org" nocase wide ascii
+    $x3 = "discord.com/api/webhooks" nocase wide ascii
+    $x4 = "ftp://" nocase wide ascii
+  condition: any of ($k*) and $w and $t and (2 of ($l*)) and any of ($x*)
+}
+
+// ═════════════ Persistence & defense evasion ═════════════
+rule Persistence_Run_Hidden {
+  name: "Trojan.Win32.Persistence.Gen"
+  score: 40
+  scope: pe, script, dotnet
+  desc: "Gizli kalıcılık (başlangıç kaydı + gizli kopya + savunmayı devre dışı bırakma)"
+  strings:
+    $r = "Software\\Microsoft\\Windows\\CurrentVersion\\Run" nocase wide ascii
+    $h1 = "attrib +h" nocase wide ascii
+    $h2 = "FILE_ATTRIBUTE_HIDDEN" wide ascii
+    $d1 = "DisableTaskMgr" nocase wide ascii
+    $d2 = "DisableRegistryTools" nocase wide ascii
+    $d3 = "DisableAntiSpyware" nocase wide ascii
+    $d4 = "EnableLUA" wide ascii
+  condition: $r and (any of ($h*)) and any of ($d*)
+}
+
+rule Process_Injection_Strings {
+  name: "Trojan.Win32.Injector.Gen"
+  score: 50
+  scope: dotnet, script
+  desc: "Başka bir sürece kod enjekte etme API dizisi"
+  strings:
+    $a = "VirtualAllocEx" wide ascii
+    $b = "WriteProcessMemory" wide ascii
+    $c = "CreateRemoteThread" wide ascii
+    $d = "NtUnmapViewOfSection" wide ascii
+    $e = "SetThreadContext" wide ascii
+    $f = "QueueUserAPC" wide ascii
+    $g = "ResumeThread" wide ascii
+  condition: $a and $b and ($c or $f or ($d and $e and $g))
+}
+
+rule Shellcode_Patterns {
+  name: "Exploit.Win32.Shellcode.Gen"
+  score: 55
+  scope: pe, script, text, office
+  desc: "Bilinen kabuk kodu (shellcode) kalıpları"
+  strings:
+    $peb32 = { 64 A1 30 00 00 00 }
+    $peb64 = { 65 48 8B 04 25 60 00 00 00 }
+    $msf1 = { FC E8 82 00 00 00 60 89 E5 31 C0 64 8B 50 30 }
+    $msf2 = { FC 48 83 E4 F0 E8 C0 00 00 00 41 51 41 50 52 }
+    $hash = { 68 8E 4E 0E EC }
+    $ror = { C1 CF 0D 01 C7 }
+  condition: $msf1 or $msf2 or ($ror and $hash)
+}
+
+rule Webshell_Generic {
+  name: "Backdoor.PHP.WebShell"
+  score: 75
+  scope: script, text
+  desc: "Web kabuğu (web shell)"
+  strings:
+    $a = /eval\s*\(\s*(base64_decode|gzinflate|str_rot13)\s*\(/i
+    $b = /(system|passthru|shell_exec|exec)\s*\(\s*\$_(GET|POST|REQUEST)/i
+    $c = "<?php" nocase
+    $d = /assert\s*\(\s*\$_(POST|GET|REQUEST)/i
+  condition: $c and ($a or $b or $d)
+}
+
+rule Python_Stealer {
+  name: "Trojan.Python.Stealer"
+  score: 75
+  scope: script, text
+  desc: "Python ile yazılmış bilgi hırsızı"
+  strings:
+    $a = "win32crypt" nocase
+    $b = "CryptUnprotectData" nocase
+    $c = "Login Data" nocase
+    $d = "discord" nocase
+    $e = "webhook" nocase
+    $f = "requests.post" nocase
+    $g = "browser_cookie3" nocase
+  condition: ($a or $b) and ($c or $g) and ($e or $f) or ($g and $d and $e)
+}
+
+rule Reverse_Shell_Script {
+  name: "Backdoor.Script.ReverseShell"
+  score: 75
+  scope: script, text
+  desc: "Ters bağlantı kabuğu (reverse shell)"
+  strings:
+    $a = /New-Object\s+System\.Net\.Sockets\.TCPClient\s*\(/i
+    $b = "GetStream()" nocase
+    $c = "iex" nocase
+    $d = /bash\s+-i\s+>&\s*\/dev\/tcp\//i
+    $e = /socket\.socket\(.*\)\s*;?\s*.*connect\(/i
+    $f = "subprocess.call([\"/bin/sh\",\"-i\"])" nocase
+    $g = "pty.spawn(" nocase
+  condition: ($a and $b and $c) or $d or ($e and ($f or $g))
+}

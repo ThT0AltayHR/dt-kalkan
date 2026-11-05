@@ -1,0 +1,30 @@
+@font-face { font-family: 'Outfit'; src: url('../fonts/outfit-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Outfit'; src: url('../fonts/outfit-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; src: url('../fonts/inter-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 100 900; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JetBrains Mono'; src: url('../fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; unicode-range: U+0000-00FF, U+0131, U+2000-206F; }
+@font-face { font-family: 'JetBrains Mono'; src: url('../fonts/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 100 800; unicode-range: U+0100-02AF; }
+
+:root {
+  --accent: #5EF2C0; --accent-2: #2BD4A0; --accent-rgb: 94,242,192;
+  --bg: #0B0D12; --bg-2: #10131A; --panel: rgba(255,255,255,0.035); --panel-2: rgba(255,255,255,0.06); --panel-3: rgba(255,255,255,0.09);
+  --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.12);
+  --text: #EEF1F7; --text-2: #A5ADBD; --text-3: #6D7586;
+  --ok: #34D399; --ok-rgb: 52,211,153; --warn: #FBBF24; --warn-rgb: 251,191,36; --danger: #F4505E; --danger-rgb: 244,80,94;
+  --radius: 18px; --radius-s: 12px;
+  --font: 'Inter', 'Segoe UI', system-ui, sans-serif; --display: 'Outfit', 'Segoe UI', system-ui, sans-serif; --mono: 'JetBrains Mono', Consolas, monospace;
+  --ease: cubic-bezier(.2,.8,.2,1); --spring: cubic-bezier(.34,1.56,.64,1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+html { color-scheme: dark; }
+body { font-family: var(--font); color: var(--text); font-size: 13.5px; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-drag: none; cursor: default; letter-spacing: -0.005em; }
+button { font: inherit; color: inherit; }
+input, select, textarea { font: inherit; }
+a { color: var(--accent); text-decoration: none; cursor: pointer; }
+.ic { flex: none; display: block; }
+.no-anim *, .no-anim *::before, .no-anim *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background-color: rgba(255,255,255,0.16); }
+::-webkit-scrollbar-track { background: transparent; }

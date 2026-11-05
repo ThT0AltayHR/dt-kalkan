@@ -1,0 +1,133 @@
+// DT Kalkan Android detection rules — © 2026 Development Turkey. All rights reserved.
+// Scope "dex" runs over DEX string tables, "apk" over manifest facts (permissions, package, components).
+
+rule Android_Meterpreter {
+  name: "Backdoor.AndroidOS.Meterpreter"
+  score: 95
+  scope: dex
+  desc: "Metasploit Android yükü (uzaktan kontrol arka kapısı)"
+  strings:
+    $a = "com/metasploit/stage"
+    $b = "metasploit/PayloadTrustManager"
+    $c = "Lcom/metasploit/stage/Payload;"
+  condition: any of them
+}
+
+rule Android_AhMyth_RAT {
+  name: "Backdoor.AndroidOS.AhMyth"
+  score: 90
+  scope: dex
+  desc: "AhMyth uzaktan erişim truva atı komutları"
+  strings:
+    $c1 = "x0000ca"
+    $c2 = "x0000fm"
+    $c3 = "x0000sm"
+    $c4 = "x0000cl"
+    $c5 = "x0000cn"
+    $c6 = "x0000mc"
+    $c7 = "x0000lm"
+    $s = "socket.io" nocase
+  condition: 4 of ($c*) or (2 of ($c*) and $s)
+}
+
+rule Android_Banker_Accessibility {
+  name: "Trojan-Banker.AndroidOS.Generic"
+  score: 80
+  scope: dex
+  desc: "Erişilebilirlik ile ekran denetimi + SMS engelleme + sahte giriş ekranı enjeksiyonu"
+  strings:
+    $a1 = "performGlobalAction"
+    $a2 = "getRootInActiveWindow"
+    $a3 = "dispatchGesture"
+    $a4 = "ACTION_SET_TEXT"
+    $s1 = "android.provider.Telephony.SMS_RECEIVED"
+    $s2 = "abortBroadcast"
+    $s3 = "pdus"
+    $i1 = "injects" nocase
+    $i2 = "/inj/" nocase
+    $i3 = "start_vnc" nocase
+    $i4 = "hvnc" nocase
+    $i5 = "keylogger" nocase
+    $i6 = "lock_device" nocase
+  condition: 2 of ($a*) and 2 of ($s*) and any of ($i*)
+}
+
+rule Android_SMS_Fraud {
+  name: "Trojan-SMS.AndroidOS.Agent"
+  score: 65
+  scope: dex
+  desc: "Gelen SMS'leri gizleyip arka planda ücretli SMS gönderme"
+  strings:
+    $a = "sendTextMessage"
+    $b = "abortBroadcast"
+    $c = "android.provider.Telephony.SMS_RECEIVED"
+    $d = "setComponentEnabledSetting"
+  condition: $a and $b and $c and $d
+}
+
+rule Android_Stalkerware_Vendor {
+  name: "Monitor.AndroidOS.Stalkerware"
+  score: 85
+  scope: dex, apk
+  desc: "Bilinen takip yazılımı (stalkerware) sağlayıcısına ait bağlantı/paket"
+  strings:
+    $d1 = "mspyonline.com" nocase
+    $d2 = "flexispy.com" nocase
+    $d3 = "thetruthspy.com" nocase
+    $d4 = "hoverwatch.com" nocase
+    $d5 = "spyzie.com" nocase
+    $d6 = "cocospy.com" nocase
+    $d7 = "spyic.com" nocase
+    $d8 = "xnspy.com" nocase
+    $d9 = "mobile-tracker-free.com" nocase
+    $d10 = "copy9.com" nocase
+    $d11 = "highstermobile.com" nocase
+    $d12 = "spyhuman.com" nocase
+    $d13 = "ikeymonitor.com" nocase
+    $d14 = "clevguard.com" nocase
+    $p1 = "com.vvt."
+    $p2 = "com.mspy."
+  condition: any of them
+}
+
+rule Android_Root_Exploit {
+  name: "Exploit.AndroidOS.Root.Gen"
+  score: 60
+  scope: dex
+  desc: "Sistem bölümünü yazılabilir yapıp root ikili dosyası yerleştirme"
+  strings:
+    $a = "mount -o remount,rw /system" nocase
+    $b = "/system/xbin/su"
+    $c = "chmod 6755"
+    $d = "/system/bin/.ext"
+  condition: $a and ($b or $d) and $c
+}
+
+rule Android_Locker_Ransom {
+  name: "Trojan-Ransom.AndroidOS.Locker"
+  score: 70
+  scope: dex
+  desc: "Ekran kilitleyip fidye isteyen metinler + cihaz yöneticisi kilidi"
+  strings:
+    $a = "lockNow"
+    $b = "resetPassword"
+    $m1 = "your device has been locked" nocase
+    $m2 = "pay the fine" nocase
+    $m3 = "cihazınız kilitlendi" nocase
+    $m4 = "bitcoin" nocase
+  condition: ($a or $b) and 2 of ($m*)
+}
+
+rule Android_Fake_System_Update {
+  name: "Trojan.AndroidOS.FakeUpdate"
+  score: 45
+  scope: apk
+  desc: "Sistem güncellemesi gibi görünen paket adı + kapsamlı izinler"
+  strings:
+    $p1 = /\ncom\.(android|google|samsung)\.(system|sys)\.?(update|updater|service|security)[a-z0-9_.]*\n/
+    $q1 = "android.permission.READ_SMS"
+    $q2 = "android.permission.BIND_ACCESSIBILITY_SERVICE"
+    $q3 = "android.permission.SYSTEM_ALERT_WINDOW"
+    $q4 = "android.permission.READ_CALL_LOG"
+  condition: $p1 and 2 of ($q*)
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sc_quick">Hızlı tarama</string>
+    <string name="sc_notch">Çentikte tara</string>
+    <string name="sc_apps">Uygulamaları tara</string>
+    <string name="fgs_reason">Gerçek zamanlı kötü amaçlı yazılım koruması: indirilen dosyaları ve yeni yüklenen uygulamaları anında tarar.</string>
+</resources>
